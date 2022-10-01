@@ -12,11 +12,7 @@ export class UserCredentialsDBAccess {
     }
 
     public async putUserCredentials(userCredentials: UserCredentials): Promise<any>{
-
         return new Promise((resolve, reject) =>{
-
-          
-
               this.nedb.insert(userCredentials, ( (err, newDoc) =>{  
 
                 if (err) {
@@ -25,11 +21,22 @@ export class UserCredentialsDBAccess {
                     return resolve(newDoc); 
                 }   
               }));
-
         });
     }
 
     public async getUserCredentials(username: string, password: string): Promise<UserCredentials | undefined>{
-        
+        return new Promise((resolve, reject) =>{
+            this.nedb.find({ username: username, password: password },  (err:Error, docs:UserCredentials[]) => {
+                if(err) {
+                    reject(err);
+                }else{
+                    if(docs.length == 0){
+                        resolve(undefined);
+                    } else {
+                        resolve(docs[0]);
+                    }
+                }
+            });
+        })
     }
 }
