@@ -1,4 +1,4 @@
-import { parse } from 'url';
+import { parse, UrlWithParsedQuery, UrlWithStringQuery } from 'url';
 
 export class Utils {
     
@@ -9,7 +9,14 @@ export class Utils {
         } else {
             return '';
         }
-        
     }
 
+    public static getUrlParameters( url: string|undefined): UrlWithParsedQuery | undefined{
+        if(url) {
+            return parse(url, true);    
+        } else {
+            return undefined;
+        }
+        
+    }
 }
